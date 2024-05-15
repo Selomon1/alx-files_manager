@@ -4,16 +4,16 @@ import { promisify } from 'util';
 class RedisClient {
   constructor() {
     this.client = redis.createClient();
-    this.isConnected = true;
+    this.connected = true;
 
     this.client.on('error', (error) => {
-      console.error(error);
-      this.isConnected = false;
-    });
+      console.log(`Redis is not connected due to: ${error.message}`);
+      this.connected = false;
+     });
   }
 
   isAlive() {
-    return this.isConnected;
+    return this.connected;
   }
 
   async get(key) {
