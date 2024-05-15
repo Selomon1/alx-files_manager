@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
 class DBClient {
   constructor() {
@@ -38,8 +38,9 @@ class DBClient {
     return this.db.collection('users').findOne({ _id: id });
   }
 
-  async CreateUser(user) {
+  async createUser(user) {
     const result = await this.db.collection('users').insertOne(user);
+
   }
 }
 
