@@ -23,11 +23,11 @@ class DBClient {
   }
 
   async nbUsers() {
-    return this.isAlive() ? await this.db.collection('users').countDocuments() : 0;
+    return this.isAlive() ? this.db.collection('users').countDocuments() : 0;
   }
 
   async nbFiles() {
-    return this.isAlive() ? await this.db.collection('files').countDocuments() : 0;
+    return this.isAlive() ? this.db.collection('files').countDocuments() : 0;
   }
 }
 
