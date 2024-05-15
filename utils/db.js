@@ -40,6 +40,7 @@ class DBClient {
 
   async createUser(user) {
     const result = await this.db.collection('users').insertOne(user);
+    return result.ops[0];
 
   }
 }
