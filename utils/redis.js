@@ -9,7 +9,7 @@ class RedisClient {
 
 		this.client.on('error', (error) => {
 			console.error(error);
-				this.isConnected = false;
+			this.isConnected = false;
 		});
 	}
 
