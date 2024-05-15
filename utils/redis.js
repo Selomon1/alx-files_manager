@@ -9,7 +9,7 @@ class RedisClient {
     this.client.on('error', (error) => {
       console.log(`Redis is not connected due to: ${error.message}`);
       this.connected = false;
-     });
+    });
   }
 
   isAlive() {
@@ -23,7 +23,6 @@ class RedisClient {
 
   async set(key, value, duration) {
     this.client.setex(key, duration, value);
-
   }
 
   async del(key) {
