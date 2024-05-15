@@ -6,6 +6,7 @@ class RedisClient {
     constructor() {
         this.client = createClient();
         this.isConnected = true;
+
         this.client.on('error', (error) => {
             console.error(error);
             this.isConnected = false;
@@ -30,7 +31,6 @@ class RedisClient {
     }
 
     async set(key, value, duration) {
-        const setAsync = promisify(this.client.set).bind(this.client);
         try {
             this.client.setex(key, duration, value);
         } catch (error) {
@@ -40,7 +40,6 @@ class RedisClient {
     }
 
     async del(key) {
-        const delAsync = promisify(this.client.del).bind(this.client);
         try {
             this.client.del(key);
         } catch (error) {
