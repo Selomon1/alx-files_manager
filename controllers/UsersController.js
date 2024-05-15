@@ -1,8 +1,8 @@
 import dbClient from '../utils/db';
-import { Queue } from 'bull';
+import Bull from 'bull';
 import sha1 from 'sha1';
 
-const userQueue = new Queue('userQueue');
+const userQueue = new Bull('userQueue');
 
 class UsersController {
   static async postNew(req, res) {
@@ -26,10 +26,7 @@ class UsersController {
 
     userQueue.add({ userId: useResult.insertedId });
 
-    return res.status(201).json({
-      id: useResult.insertedId,
-      email: useResult.email,
-    });
+    return res.status(201).json({ id: useResult.insertedId, email });
   }
 }
 
