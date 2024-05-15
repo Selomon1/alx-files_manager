@@ -1,5 +1,8 @@
 import dbClient from '../utils/db';
+import { Queue } from 'bull';
 import sha1 from 'sha1';
+
+const userQueue = new Queue('userQueue');
 
 class UsersController {
   static async postNew(req, res) {
@@ -13,24 +16,19 @@ class UsersController {
       return res.status(400).json({ error: 'Missing password' });
     }
 
-    const user = await dbClient.users.findOne({ email });
+    const user = await dbClient.findUser({ email });
 
     if (user) {
       return res.status(400).json({ error: 'Already exist' });
     }
 
-    const hashedPassword = sha1(password);
+    const useResult = await dbClient.createUser({ email, password: sha1(password) });
 
-    const newUser = {
-      email,
-      password: hashedPassword,
-    };
-
-    const result = await dbClient.users.insertOne(newUser);
+    userQueue.add({ userId: useResult.insertedId });
 
     return res.status(201).json({
-      id: result.insertedId,
-      email: newUser.email,
+      id: useResult.insertedId,
+      email: useResult.email,
     });
   }
 }
