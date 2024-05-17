@@ -16,7 +16,7 @@ class UsersController {
       return res.status(400).json({ error: 'Missing password' });
     }
 
-    const exisingUser = await dbClient.db.collection('users').findUser({ email });
+    const exisingUser = await dbClient.db.collection('users').findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ error: 'Already exist' });
@@ -40,7 +40,7 @@ class UsersController {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const user = await dbClient.collection('users').findOne({ -id: new ('mongodb').ObjectID(userId) });
+    const user = await dbClient.collection('users').findOne({ _id: new ('mongodb').ObjectID(userId) });
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
