@@ -3,7 +3,6 @@ import redisClient from '../utils/redis';
 import { createHash } from 'crypto';
 import { ObjectID } from 'mongodb';
 
-
 class UsersController {
   static async postNew(req, res) {
     try {
@@ -48,3 +47,4 @@ class UsersController {
 }
 
 module.exports = UsersController;
+
