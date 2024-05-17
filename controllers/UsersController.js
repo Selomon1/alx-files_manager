@@ -23,9 +23,9 @@ class UsersController {
 
     const hashedPassword = crypto.createHash('sha1').update(password).digest('hex');
     const newUser = { email, password: hashedPassword };
-    const result = await dbClient.collection('users').inserOne(newUser);
+    const result = await dbClient.collection('users').insertOne(newUser);
 
-    return res.status(201).json({ id: useResult.insertedId, email });
+    return res.status(201).json({ id: result.insertedId, email: newUser.email });
   }
 
   static async getMe(req, res) {
