@@ -34,27 +34,16 @@ class UsersController {
   }
 
   static async getMe(req, res) {
-    const token = req.headers('x-token');
-    if (!token) {
+    const token = req.headers['x-token'];
+    const userId = await redisClient.get(`auth_${token}`);
+    const objectId = new mongo.ObjectID(userId)
+    const user = await dbClient.db.collection('users').findOne({ _id: objectId });
+
+    if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    try {
-      const userId = await redisClient.get(`auth_${token}`);
-      if (!userId) {
-        return res.status(401).json({ error: 'Unauthorized' });
-      }
-
-      const user = await dbClient.collection('users').findOne({ _id: new ('mongodb').ObjectID(userId) });
-      if (!user) {
-        return res.status(401).json({ error: 'Unauthorized' });
-      }
-
-      return res.status(200).json({ id: user._id, email: user.email });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
+    return res.json({ userId, email: user.email });
   }
 }
 
