@@ -1,6 +1,7 @@
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
-import crypto from 'crypto';
+import sha1 from 'sha1';
+import { ObjectId } from 'mongodb';
 
 
 class UsersController {
@@ -21,7 +22,7 @@ class UsersController {
       return res.status(400).json({ error: 'Already exist' });
     }
 
-    const hashedPassword = crypto.createHash('sha1').update(password).digest('hex');
+    const hashedPassword = sha1(password);
     const newUser = { email, password: hashedPassword };
     const result = await dbClient.collection('users').insertOne(newUser);
 
